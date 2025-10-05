@@ -72,7 +72,7 @@ The model's performance on the training set (R-squared: 0.845) was nearly identi
 ## How to Run
 
 1.  **Clone the Repository.**
-2.  **Set up the Data:** Download the "Property Assessment Data" CSV from the link in the Data Source section and place it in a Google Drive folder at the path `My Drive/MIAI_Project/data/`.
+2.  **Set up the Data:** Download the "Property Assessment Data" CSV from the link in the Data Source section and place it in a Google Drive folder at the path https://drive.google.com/drive/folders/1pFD7AK32eBGZV5wry9PpK3Dd4mWuSmTg?usp=drive_link.
 3.  **Open in Google Colab:** Upload the `.ipynb` notebook file to Google Colab and ensure the runtime is set to `T4 GPU`.
 4.  **Run the Notebook:** Execute the cells in the notebook from top to bottom.
 
