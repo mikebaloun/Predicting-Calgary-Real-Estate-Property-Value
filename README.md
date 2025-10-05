@@ -54,6 +54,7 @@ The close alignment between the test and train set scores confirms that the mode
 *This plot ranks the features by their importance to the model. Geospatial coordinates are clearly the most influential factors.*
 
 ![Actual vs Predicted Plot](./images/Actual_vs_Predicted_Values.png)
+
 *This plot shows the model's predictions against the actual property values. The tight clustering around the red diagonal line indicates a strong predictive performance.*
 
 ![Correlation Matrix](./images/Correlation_Matrix.png)
