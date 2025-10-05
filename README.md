@@ -58,6 +58,7 @@ The close alignment between the test and train set scores confirms that the mode
 *This plot shows the model's predictions against the actual property values. The tight clustering around the red diagonal line indicates a strong predictive performance.*
 
 ![Correlation Matrix](./images/Correlation_Matrix.png)
+
 *This heatmap shows the correlation between the core numerical features, confirming the absence of severe multicollinearity.*
 
 ### **4.0 Conclusion**
