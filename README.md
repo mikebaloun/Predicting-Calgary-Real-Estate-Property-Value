@@ -1,4 +1,4 @@
-### **Title:** A Predictive Model for the Calgary Real Estate Market: An End-to-End Data Science Project
+### **Title:** A Predictive Model for the Calgary Real Estate Market
 
 **Author:** Michael Baloun
 
