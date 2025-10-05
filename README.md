@@ -1,5 +1,7 @@
 **Title:** A Predictive Model for the Calgary Real Estate Market: An End-to-End Data Science Project
+
 **Author:** Michael Baloun
+
 **Date:** October 5, 2025
 
 ---
