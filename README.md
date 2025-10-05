@@ -1,4 +1,4 @@
-**Title:** A Predictive Model for the Calgary Real Estate Market: An End-to-End Data Science Project
+### **Title:** A Predictive Model for the Calgary Real Estate Market: An End-to-End Data Science Project
 
 **Author:** Michael Baloun
 
@@ -8,7 +8,7 @@
 
 ### **Executive Summary**
 
-This report details the development of a highly accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full, iterative workflow, from sourcing and cleaning a large-scale public dataset of over 2.2 million records to advanced feature engineering, hyperparameter tuning, and model interpretation. A key innovation was the extraction of geospatial coordinates from raw polygon data to create a superior location feature. The final, tuned XGBoost model achieves an **R-squared score of 0.84**, successfully explaining 84% of the variance in the core residential market. This project serves as a comprehensive case study in applying a robust data science methodology to a complex, real-world problem.
+This report details the development of a highly accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full, iterative workflow, from sourcing and cleaning a large-scale public dataset to advanced feature engineering, hyperparameter tuning, and model interpretation. The analysis focuses on four years of assessment data (2021-2024). A key innovation was the extraction of geospatial coordinates from raw polygon data. The final, tuned XGBoost model achieves an **R-squared score of 0.84**, successfully explaining 84% of the variance in the core residential market. This research serves as a comprehensive case study in applying a robust data science methodology to a complex, real-world problem.
 
 ---
 
@@ -21,15 +21,15 @@ The goal of this project was to bring data-driven transparency to the often opaq
 The project was developed in a Google Colab environment and followed a structured, iterative workflow.
 
 **2.1 Data Preparation**
-The primary dataset, sourced from the City of Calgary's Open Data portal, was loaded into Pandas for cleaning. This involved correcting data types, handling formatting inconsistencies, and filtering the data to a working set of residential properties.
+The primary dataset, sourced from the City of Calgary's Open Data portal, was loaded into Pandas. The analysis focuses on the four most recent years of data available (2021-2024). Initial cleaning involved correcting data types, handling formatting inconsistencies, and filtering the data to a working set of residential properties.
 
 **2.2 Feature Engineering**
-Geospatial coordinates were engineered from the `MULTIPOLYGON` column. The centroid of each property's boundary was calculated using the Shapely library to generate precise `latitude` and `longitude` features, which proved to be more effective than categorical location labels.
+Geospatial coordinates were engineered from the `MULTIPOLYGON` column. The centroid of each property's boundary was calculated using the Shapely library to generate precise `latitude` and `longitude` features.
 
 **2.3 Modeling and Optimization**
 To ensure the model could generalize to new data, the dataset was partitioned into an 80% training set and a 20% held-out test set.
 * An **XGBoost Regressor** was selected as the primary algorithm.
-* The dataset was strategically filtered to focus the model on the core residential market (properties assessed under $3 million) after diagnostics revealed that high-value outliers were skewing performance.
+* The dataset was strategically filtered to focus the model on the core residential market.
 * **Hyperparameter tuning** was performed using `RandomizedSearchCV` to find the optimal settings for the model, which was the final step in maximizing its predictive accuracy.
 
 ### **3.0 Results and Discussion**
@@ -42,7 +42,22 @@ The final, tuned XGBoost model demonstrated excellent performance and a strong, 
 | **MAE** | $72,556.72 | $71,431.93 |
 | **RMSE** | $122,021.68 | $118,516.21 |
 
-The close alignment between the test and train set scores confirms that the model is **well-fitted and not "memorizing" the data**. Key insights from the analysis include the critical importance of hyperparameter tuning, the superiority of geospatial coordinate features, and the significant impact of strategic outlier removal.
+The close alignment between the test and train set scores confirms that the model is **well-fitted and not "memorizing" the data**. Key insights from the analysis include:
+
+* **Key Insight 1: Hyperparameter Tuning is Crucial:** The final tuning step provided the most significant performance boost, increasing the R-squared score from 0.73 to 0.84.
+* **Key Insight 2: Geospatial Coordinates are Superior:** Feature importance analysis confirmed that precise `latitude` and `longitude` were the most powerful predictors of value.
+* **Key Insight 3: Outlier Handling is Key:** Strategically removing a small fraction of extreme outliers was critical to building a reliable and accurate model for the general market.
+
+**3.1 Visual Diagnostics**
+
+![Feature Importance Plot](./images/Tuned_Feature_Importance.png)
+*This plot ranks the features by their importance to the model. Geospatial coordinates are clearly the most influential factors.*
+
+![Actual vs Predicted Plot](./images/Actual_vs_Predicted_Values.png)
+*This plot shows the model's predictions against the actual property values. The tight clustering around the red diagonal line indicates a strong predictive performance.*
+
+![Correlation Matrix](./images/Correlation_Matrix.png)
+*This heatmap shows the correlation between the core numerical features, confirming the absence of severe multicollinearity.*
 
 ### **4.0 Conclusion**
 
@@ -53,7 +68,7 @@ This project successfully culminated in a high-performing predictive model for a
 ### **Appendix A: Replication Steps**
 
 1.  **Clone the Repository:** `git clone https://github.com/your-username/your-repository-name.git`
-2.  **Set up the Data:** Download the "Property Assessment Data" CSV from [this link](https://data.calgary.ca/Government/Total-Property-Assessed-Value/dmd8-bmxh) and place it in a Google Drive folder at the path `My Drive/MIAI_Project/data/`.
+2.  **Set up the Data:** Download the "Property Assessment Data" CSV from [this link](https://data.calgary.ca/Government/Total-Property-Assessed-Value/dmd8-bmxh) or access the 4-year dataset used in this analysis from this [Google Drive folder](https://drive.google.com/drive/folders/1pFD7AK32eBGZV5wry9PpK3Dd4mWuSmTg?usp=sharing).
 3.  **Open in Google Colab:** Upload the `.ipynb` notebook file to Google Colab and ensure the runtime is set to `T4 GPU`.
 4.  **Run the Notebook:** Execute the cells in the notebook from top to bottom.
 
