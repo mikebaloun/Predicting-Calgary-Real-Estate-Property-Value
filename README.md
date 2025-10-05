@@ -1,4 +1,4 @@
-# Predictive Modeling of the Calgary Real Estate Market
+# Predictive ML Modeling of the Calgary Real Estate Market
 
 This repository contains the complete, end-to-end data science project for developing a highly accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full, iterative workflow, from sourcing and cleaning raw public data to advanced feature engineering, hyperparameter tuning, and model interpretation.
 
@@ -43,10 +43,10 @@ Geospatial coordinates were engineered from the `MULTIPOLYGON` column. The centr
 
 #### 3\. Modeling and Optimization
 
-An iterative modeling strategy was employed. To ensure the model could generalize to new data and to prevent overfitting, the dataset was partitioned into an **80% training set and a 20% held-out test set**. The model was trained exclusively on the training set, and all final performance metrics were reported on the test set.
+An iterative modeling strategy was employed. To ensure the model could generalize to new data and to prevent overfitting, the dataset was partitioned into an **80% training set and a 20% held-out test set**.
 
   * An **XGBoost Regressor** was selected as the primary algorithm.
-  * Initial models revealed that a small percentage of high-value properties were acting as outliers. The dataset was strategically filtered to focus the model on the core residential market.
+  * The dataset was strategically filtered to focus the model on the core residential market.
   * **Hyperparameter tuning** was performed using `RandomizedSearchCV` to find the optimal settings for the model, which was the final step in maximizing its predictive accuracy.
 
 -----
@@ -55,13 +55,15 @@ An iterative modeling strategy was employed. To ensure the model could generaliz
 
 The final, tuned XGBoost model demonstrated excellent performance and a strong, generalizable fit.
 
-**Final Tuned Model Performance (Test Set):**
+#### Final Tuned Model Performance
 
-  * **R-squared:** 0.836
-  * **MAE:** $72,556.72
-  * **RMSE:** $122,021.68
+| Metric | Test Set (Unseen Data) | Train Set (Seen Data) |
+| :--- | :--- | :--- |
+| **R-squared** | 0.836 | 0.845 |
+| **MAE** | $72,556.72 | $71,431.93 |
+| **RMSE** | $122,021.68 | $118,516.21 |
 
-The model's performance on the training set (R-squared: 0.845) was nearly identical to the test set, confirming that the model is **well-fitted and not "memorizing" the data**.
+The model's performance on the training set was nearly identical to the test set, confirming that the model is **well-fitted and not "memorizing" the data**.
 
   * **Key Insight 1: Hyperparameter Tuning is Crucial:** The final tuning step provided the most significant performance boost, increasing the R-squared score from 0.73 to 0.84.
   * **Key Insight 2: Geospatial Coordinates are Superior:** Using precise `latitude` and `longitude` was a more effective location feature than simple categorical labels.
@@ -71,8 +73,8 @@ The model's performance on the training set (R-squared: 0.845) was nearly identi
 
 ## How to Run
 
-1.  **Clone the Repository.**
-2.  **Set up the Data:** Download the "Property Assessment Data" CSV from the link in the Data Source section and place it in a Google Drive folder at the path https://drive.google.com/drive/folders/1pFD7AK32eBGZV5wry9PpK3Dd4mWuSmTg?usp=drive_link.
+1.  **Clone the Repository:** `git clone https://github.com/your-username/your-repository-name.git`
+2.  **Set up the Data:** Download the "Property Assessment Data" CSV from the link in the Data Source section and place it in a Google Drive folder at the path `(https://drive.google.com/drive/folders/1pFD7AK32eBGZV5wry9PpK3Dd4mWuSmTg?usp=drive_link)`.
 3.  **Open in Google Colab:** Upload the `.ipynb` notebook file to Google Colab and ensure the runtime is set to `T4 GPU`.
 4.  **Run the Notebook:** Execute the cells in the notebook from top to bottom.
 
