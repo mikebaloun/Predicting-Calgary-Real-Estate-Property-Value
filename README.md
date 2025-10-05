@@ -8,7 +8,7 @@
 
 ### **Executive Summary**
 
-This report details the development of a highly accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full, iterative workflow, from sourcing and cleaning a large-scale public dataset to advanced feature engineering, hyperparameter tuning, and model interpretation. The analysis focuses on four years of assessment data (2021-2024). A key innovation was the extraction of geospatial coordinates from raw polygon data. The final, tuned XGBoost model achieves an **R-squared score of 0.84**, successfully explaining 84% of the variance in the core residential market. This research serves as a comprehensive case study in applying a robust data science methodology to a complex, real-world problem.
+This report details the development of an accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full workflow, from sourcing and cleaning a large-scale public dataset to advanced feature engineering, hyperparameter tuning, and model interpretation. The analysis focuses on four years of assessment data (2021-2024). A key innovation was the extraction of geospatial coordinates from raw polygon data. The final, tuned XGBoost model achieves an **R-squared score of 0.84**, successfully explaining 84% of the variance in the core residential market. This research serves as a comprehensive case study in applying a robust data science methodology to a complex, real-world problem.
 
 ---
 
