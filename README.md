@@ -1,75 +1,80 @@
-# Predictive Modeling of the Calgary Real Estate Market
+Predictive Modeling of the Calgary Real Estate Market
+This repository contains the complete, end-to-end data science project for developing a highly accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full, iterative workflow, from sourcing and cleaning raw public data to advanced feature engineering, hyperparameter tuning, and model interpretation.
 
-This repository contains the complete data science project for developing a predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates an end-to-end workflow, from sourcing and cleaning raw public data to training, evaluating, and interpreting an advanced machine learning model.
+The final tuned XGBoost model achieves an R-squared score of 0.84, successfully explaining 84% of the variance in the core residential market.
 
-## Table of Contents
+Table of Contents
+Project Objective
 
-1.  [Project Objective](https://www.google.com/search?q=%23project-objective)
-2.  [Methodology](https://www.google.com/search?q=%23methodology)
-3.  [Results & Key Findings](https://www.google.com/search?q=%23results--key-findings)
-4.  [How to Run](https://www.google.com/search?q=%23how-to-run)
-5.  [Tools and Libraries](https://www.google.com/search?q=%23tools-and-libraries)
+Data Source
 
------
+Methodology
 
-## Project Objective
+Results & Key Findings
 
+How to Run
+
+Tools and Libraries
+
+Project Objective
 The goal of this project was to bring data-driven transparency to the often opaque real estate market. By leveraging publicly available data, this analysis aimed to build a robust model that can accurately predict property values and identify the key factors that influence them, serving as an open-source tool for public benefit.
 
------
+Data Source
+The primary dataset for this project is the Property Assessment Data from the City of Calgary's Open Data portal. This comprehensive dataset contains over 2.2 million historical assessment records, including property characteristics, location information, and the assessed value used for taxation.
 
-## Methodology
+The data can be accessed directly from the portal: Calgary Property Assessment Data
 
+Methodology
 The project was developed in a Google Colab environment and followed a structured, iterative workflow.
 
-#### 1\. Data Sourcing & Preparation
+1. Data Preparation
+The raw dataset was loaded into Pandas, where it was cleaned to correct data types and filtered to include only residential properties.
 
-The primary dataset was the "Property Assessment" data from the City of Calgary's Open Data portal, containing over 2.2 million records. Initial preprocessing in Pandas involved correcting data types for key numerical columns and filtering the dataset to a working set of only "Residential" properties.
+2. Feature Engineering
+Geospatial coordinates were engineered from the MULTIPOLYGON column. The centroid of each property's boundary was calculated using the Shapely library to generate precise latitude and longitude features.
 
-#### 2\. Feature Engineering
+3. Modeling and Optimization
+An iterative modeling strategy was employed. To ensure the model could generalize to new data and to prevent overfitting, the dataset was partitioned into an 80% training set and a 20% held-out test set. The model was trained exclusively on the training set, and all final performance metrics were reported on the test set.
 
-To create a powerful location feature, geospatial coordinates were engineered from the `MULTIPOLYGON` column. The centroid of each property's boundary polygon was calculated using the Shapely library to generate precise `latitude` and `longitude` features.
+An XGBoost Regressor was selected as the primary algorithm.
 
-#### 3\. Modeling & Evaluation
+Initial models revealed that a small percentage of high-value properties were acting as outliers. The dataset was strategically filtered to focus the model on the core residential market.
 
-An iterative modeling strategy was employed:
+Hyperparameter tuning was performed using RandomizedSearchCV to find the optimal settings for the model, which was the final step in maximizing its predictive accuracy.
 
-  * A baseline **Linear Regression** model was established, which proved insufficient for this complex task (R-squared of 0.13).
-  * An **XGBoost Regressor** was implemented, which significantly improved performance.
-  * Model diagnostics, including **feature importance analysis** and an evaluation of error metrics (MAE vs. RMSE), revealed that a small percentage of high-value outliers were disproportionately skewing the results.
-  * The final model was trained on a filtered dataset that excluded these outliers (properties assessed over $3 million), allowing it to specialize on the core residential market. The model's performance was validated on a 20% held-out test set.
+Results & Key Findings
+The final, tuned XGBoost model demonstrated excellent performance and a strong, generalizable fit.
 
------
+Final Tuned Model Performance (Test Set):
 
-## Results & Key Findings
+R-squared: 0.836
 
-The final, refined XGBoost model achieved an **R-squared of 0.73** on the test set, indicating it successfully explains 73% of the variance in Calgary's core residential property market.
+MAE: $72,556.72
 
-  * **Key Insight 1: Geospatial Features are Crucial:** Using precise `latitude` and `longitude` coordinates was a far more effective location feature than using categorical neighborhood names, boosting the R-squared score from 0.39 to 0.50.
-  * **Key Insight 2: Outlier Handling is Critical:** The most significant performance gain came from strategically filtering out a small fraction (\<1%) of extreme high-value properties. This increased the final R-squared from 0.50 to 0.73 and resulted in a more robust and reliable model.
-  * **Key Insight 3: A Well-Fitting Model:** The final model's performance on the test set (R²: 0.73) was nearly identical to its performance on the train set (R²: 0.73), confirming that the model learned a general pattern and was not simply memorizing the data.
+RMSE: $122,021.68
 
------
+The model's performance on the training set (R-squared: 0.845) was nearly identical to the test set, confirming that the model is well-fitted and not "memorizing" the data.
 
-## How to Run
+Key Insight 1: Hyperparameter Tuning is Crucial: The final tuning step provided the most significant performance boost, increasing the R-squared score from 0.73 to 0.84.
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/your-username/your-repository-name.git
-    ```
-2.  **Set up the Data:**
-      * Download the "Property Assessment Data" CSV from the City of Calgary's Open Data portal.
-      * Place the CSV file in a Google Drive folder at the path `My Drive/MIAI_Project/data/`.
-3.  **Open in Google Colab:**
-      * Upload the `.ipynb` notebook file from this repository to your Google Colab account.
-      * Ensure the runtime is set to use a `T4 GPU` for efficient training.
-4.  **Run the Notebook:** Execute the cells in the notebook from top to bottom.
+Key Insight 2: Geospatial Coordinates are Superior: Using precise latitude and longitude was a more effective location feature than simple categorical labels.
 
------
+Key Insight 3: Outlier Handling is Key: Strategically removing a small fraction of extreme outliers was critical to building a reliable and accurate model for the general market.
 
-## Tools and Libraries
+How to Run
+Clone the Repository.
 
-  * **Language:** Python
-  * **Core Libraries:** Pandas, Scikit-learn, XGBoost, Shapely
-  * **Environment:** Google Colab (T4 GPU)
-  * **Version Control:** Git / GitHub
+Set up the Data: Download the "Property Assessment Data" CSV from the link in the Data Source section and place it in a Google Drive folder at the path My Drive/MIAI_Project/data/.
+
+Open in Google Colab: Upload the .ipynb notebook file to Google Colab and ensure the runtime is set to T4 GPU.
+
+Run the Notebook: Execute the cells in the notebook from top to bottom.
+
+Tools and Libraries
+Language: Python
+
+Core Libraries: Pandas, Scikit-learn, XGBoost, Shapely
+
+Environment: Google Colab (T4 GPU)
+
+Version Control: Git / GitHub
