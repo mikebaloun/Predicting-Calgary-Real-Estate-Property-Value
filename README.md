@@ -56,7 +56,7 @@ Combined, these features let the model learn: *what the property is*, *where it 
 ![Feature Importance](images/Tuned%20Model%20Feature%20Importance.png)
 
 ### 2. Actual vs. Predicted Values (Density Heatmap)
-*A tight cloud along the 45° line indicates strong predictive accuracy. The heatmap reveals high density around the $400k–$700k market segment.*
+*A tight cloud along the 45° line indicates strong predictive accuracy. The heatmap reveals high density around $400k–$700k.*
 ![Actual vs Predicted](images/Actual%20vs%20Predicted%20Values.png)
 
 ### 3. Residual Analysis
