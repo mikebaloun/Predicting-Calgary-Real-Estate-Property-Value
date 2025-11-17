@@ -2,10 +2,6 @@
 
 **A residential Automated Valuation Model (AVM) achieving 94.3% R² on unseen data.**
 
-![Status](https://img.shields.io/badge/Status-Production_Ready-success)
-![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
-![XGBoost](https://img.shields.io/badge/Model-XGBoost-orange)
-
 ---
 
 ## 📊 Executive Summary
