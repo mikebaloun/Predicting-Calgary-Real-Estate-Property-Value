@@ -1,4 +1,4 @@
-# Calgary Real Estate Valuation Engine 🏘️
+# Calgary Real Estate Valuation Engine
 
 **A residential Automated Valuation Model (AVM) achieving 94.3% R² on unseen data.**
 
