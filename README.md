@@ -21,13 +21,13 @@ Moving beyond simple coordinates, the model uses a **Hybrid Spatial–Categorica
 | **R² Score** | **0.943** | Explains 94.3% of variance in assessed values. |
 | **MAE** | **$41,951** | Average absolute error in dollar terms. |
 | **RMSE** | **$80,392** | Penalizes larger errors more heavily. |
-| **Generalization** | **1.0%** | Minimal gap between Train vs. Test scores. |
+| **Train–Test Gap** | **0.010** | Difference between Train and Test R² (Low overfitting). |
 
 ---
 
 ## 🧠 Engineering Strategy: "Context over Coordinates"
 
-Early baselines using only raw Latitude/Longitude plateaued around **0.84 R²**. The jump to **0.94 R²** came from treating **context** as a first-class signal:
+Early baselines using only raw Latitude/Longitude features plateaued around **0.84 R²**. The jump to **0.94 R²** came from treating **context** as a first-class signal:
 
 1.  **Granular Zoning (`SUB_PROPERTY_USE`)**
     Distinguishes between property types (e.g., "Low-rise Condo" vs. "Detached Home") rather than treating all residential lots as homogeneous.
@@ -66,7 +66,7 @@ Early baselines using only raw Latitude/Longitude plateaued around **0.84 R²**.
 ![Residuals](images/Residuals.png)
 
 ### 4. Correlation Matrix
-*Core numeric inputs exhibit low correlation, ensuring model stability.*
+*Core numeric inputs exhibit low correlation, which supports model stability.*
 ![Correlation Matrix](images/Correlation%20Matrix.png)
 
 ---
@@ -94,7 +94,7 @@ Early baselines using only raw Latitude/Longitude plateaued around **0.84 R²**.
     ```
 
 3.  **Download the Data**
-    * Download the **"Total Property Assessed Value"** CSV from [Calgary Open Data](https://data.calgary.ca/).
+    * Download the **"Total Property Assessed Value"** CSV from the [Calgary Open Data](https://data.calgary.ca/).
     * Place it in a `data/` directory.
 
 4.  **Run the Analysis**
