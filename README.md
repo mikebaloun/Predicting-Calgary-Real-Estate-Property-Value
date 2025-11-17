@@ -2,37 +2,39 @@
 
 **A residential Automated Valuation Model (AVM) achieving 94.3% R² on unseen data.**
 
+![Status](https://img.shields.io/badge/Status-Portfolio_Project-blue)
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![XGBoost](https://img.shields.io/badge/Model-XGBoost-orange)
+
 ---
 
 ## 📊 Executive Summary
 
 This project implements an end-to-end machine learning pipeline to predict **residential property values in Calgary, Alberta** using open municipal data.
 
-Moving beyond simple geospatial analysis, the model uses a **Hybrid Spatial–Categorical strategy** to capture the nuance of urban pricing. By engineering features around property utility and neighborhood clusters, it achieves high predictive performance with a clean generalization profile.
+Moving beyond simple coordinates, the model uses a **Hybrid Spatial–Categorical strategy** to capture the nuance of urban pricing. By engineering features around property utility and neighborhood clusters, it achieves high predictive performance with minimal overfitting.
 
 ### Key Performance Indicators (Held-out Test Set)
 
 | Metric | Score | Context |
 | :--- | :--- | :--- |
 | **R² Score** | **0.943** | Explains 94.3% of variance in assessed values. |
-| **MAE** | **$41,951** | Average absolute error in dollar terms (~8% of value). |
+| **MAE** | **$41,951** | Average absolute error in dollar terms. |
 | **RMSE** | **$80,392** | Penalizes larger errors more heavily. |
-| **Generalization** | **1.0%** | Minimal gap between Train vs. Test scores (Low overfitting). |
+| **Generalization** | **1.0%** | Minimal gap between Train vs. Test scores. |
 
 ---
 
 ## 🧠 Engineering Strategy: "Context over Coordinates"
 
-Early baselines using only raw Latitude/Longitude features plateaued around **0.84 R²**. The jump to **0.94 R²** came from treating **context** as a first-class signal:
+Early baselines using only raw Latitude/Longitude plateaued around **0.84 R²**. The jump to **0.94 R²** came from treating **context** as a first-class signal:
 
 1.  **Granular Zoning (`SUB_PROPERTY_USE`)**
-    Allows the model to distinguish between property types (e.g., "Low-rise Condo" vs. "Detached Home") instead of treating all residential lots as homogeneous.
-2.  **Neighborhood Codes (`COMM_CODE`) with Native Categoricals**
-    Uses `enable_categorical=True` in XGBoost to handle high-cardinality neighborhood identifiers directly, avoiding memory-heavy one-hot encoding.
-3.  **Spatial Centroids from Geometry**
-    Parses WKT `MULTIPOLYGON` data via **Shapely** to extract precise geometric centroids (longitude/latitude) for each parcel.
-
-Combined, these features let the model learn: *what the property is*, *where it is*, and *how it’s used*—not just raw coordinates.
+    Distinguishes between property types (e.g., "Low-rise Condo" vs. "Detached Home") rather than treating all residential lots as homogeneous.
+2.  **Neighborhood Codes (`COMM_CODE`)**
+    Leverages XGBoost's native categorical support (`enable_categorical=True`) to handle high-cardinality identifiers efficiently without memory-heavy encoding.
+3.  **Precise Geometry**
+    Parses WKT `MULTIPOLYGON` data via **Shapely** to extract exact geometric centroids (longitude/latitude) for each parcel.
 
 ---
 
@@ -40,31 +42,31 @@ Combined, these features let the model learn: *what the property is*, *where it 
 
 * **Source:** City of Calgary Open Data
 * **Dataset:** "Total Property Assessed Value"
-* **Scope:** Filtered to `ASSESSMENT_CLASS_DESCRIPTION == "Residential"`
+* **Scope:** Residential properties < $3M (Filtered to remove extreme outliers).
 
-**Preprocessing highlights:**
-* **Cleaning:** Parsed currency-like strings and filtered explicitly for valid residential zoning.
-* **Outlier Handling:** Restricted to values < $3M to stabilize training on the general market.
-* **Geometry:** Extracted centroids from `MULTIPOLYGON` shapes using `shapely.wkt.loads`.
+**Processing Highlights:**
+* **Parsing:** Converted raw WKT polygon strings into coordinate floats.
+* **Cleaning:** Standardized currency strings and handled missing data.
+* **Filtering:** Isolated `ASSESSMENT_CLASS_DESCRIPTION == "Residential"`.
 
 ---
 
 ## 📉 Visual Diagnostics
 
 ### 1. Feature Importance
-*The model correctly identifies Property Type and Neighborhood as the primary drivers of value, matching human appraisal logic.*
+*Property Type and Neighborhood are the primary value drivers, matching appraisal logic.*
 ![Feature Importance](images/Tuned%20Model%20Feature%20Importance.png)
 
-### 2. Actual vs. Predicted Values (Density Heatmap)
-*A tight cloud along the 45° line indicates strong predictive accuracy. The heatmap reveals high density around $400k–$700k.*
+### 2. Actual vs. Predicted Values
+*A tight cloud along the 45° line indicates strong predictive accuracy.*
 ![Actual vs Predicted](images/Actual%20vs%20Predicted%20Values.png)
 
 ### 3. Residual Analysis
-*Errors are centered near zero and approximately symmetric. The "fan" shape reflects natural heteroscedasticity—larger dollar errors for more expensive homes—rather than systematic bias.*
+*Errors are centered at zero. The "fan" shape reflects natural variance—larger dollar errors for expensive homes—rather than model bias.*
 ![Residuals](images/Residuals.png)
 
 ### 4. Correlation Matrix
-*Core numeric inputs exhibit low to moderate correlation, which supports model stability.*
+*Core numeric inputs exhibit low correlation, ensuring model stability.*
 ![Correlation Matrix](images/Correlation%20Matrix.png)
 
 ---
@@ -72,9 +74,8 @@ Combined, these features let the model learn: *what the property is*, *where it 
 ## ⚙️ Tech Stack
 
 * **Language:** Python 3.10+
-* **Core Libraries:** `pandas`, `numpy`
-* **Modeling:** `xgboost.XGBRegressor` (GPU-accelerated)
-* **Geospatial:** `shapely` (WKT parsing)
+* **Modeling:** `xgboost` (GPU-accelerated), `scikit-learn`
+* **Data:** `pandas`, `numpy`, `shapely` (Geospatial)
 * **Visualization:** `seaborn`, `matplotlib`
 
 ---
@@ -93,13 +94,13 @@ Combined, these features let the model learn: *what the property is*, *where it 
     ```
 
 3.  **Download the Data**
-    * Download the "Total Property Assessed Value" CSV from the [City of Calgary Open Data portal](https://data.calgary.ca/).
+    * Download the **"Total Property Assessed Value"** CSV from [Calgary Open Data](https://data.calgary.ca/).
     * Place it in a `data/` directory.
 
 4.  **Run the Analysis**
     * Upload `Predicting_Calgary_Real_Estate_Property_Value.ipynb` to Google Colab.
     * Select a **T4 GPU** runtime for faster execution.
-    * Run all cells to reproduce the pipeline.
+    * Run all cells.
 
 ---
 *Author: Michael Baloun | Date: November 17, 2025*
