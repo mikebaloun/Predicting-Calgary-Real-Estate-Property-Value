@@ -86,8 +86,8 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 
 1.  **Clone the repo**
     ```bash
-    git clone [https://github.com/mikebaloun/Predicting-Calgary-Real-Estate-Property-Value.git](https://github.com/mikebaloun/Predicting-Calgary-Real-Estate-Property-Value.git)
-    cd Predicting-Calgary-Real-Estate-Property-Value
+    git clone https://github.com/mikebaloun/Calgary-Real-Estate-Valuation-Engine.git
+    cd Calgary-Real-Estate-Valuation-Engine
     ```
 
 2.  **Install dependencies**
