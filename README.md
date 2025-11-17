@@ -1,82 +1,109 @@
-### **Title:** A Predictive Model for the Calgary Real Estate Market
+# Calgary Real Estate Valuation Engine 🏘️
 
-**Author:** Michael Baloun
+**A residential Automated Valuation Model (AVM) achieving 94.3% R² on unseen data.**
 
-**Date:** October 5, 2025
-
----
-
-### **Executive Summary**
-
-This report details the development of an accurate predictive model for residential property assessed values in Calgary, Alberta. The project demonstrates a full workflow, from sourcing and cleaning a large-scale public dataset to advanced feature engineering, hyperparameter tuning, and model interpretation. The analysis focuses on four years of assessment data (2021-2024). A key innovation was the extraction of geospatial coordinates from raw polygon data. The final, tuned XGBoost model achieves an **R-squared score of 0.84**, successfully explaining 84% of the variance in the core residential market. This research serves as a comprehensive case study in applying a robust data science methodology to a complex, real-world problem.
+![Status](https://img.shields.io/badge/Status-Production_Ready-success)
+![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
+![XGBoost](https://img.shields.io/badge/Model-XGBoost-orange)
 
 ---
 
-### **1.0 Introduction**
+## 📊 Executive Summary
 
-The goal of this project was to bring data-driven transparency to the often opaque real estate market. By leveraging publicly available data, this analysis aimed to build a robust model that can accurately predict property values and identify the key factors that influence them, serving as an open-source tool for public benefit.
+This project implements an end-to-end machine learning pipeline to predict **residential property values in Calgary, Alberta** using open municipal data.
 
-### **2.0 Methodology**
+Moving beyond simple geospatial analysis, the model uses a **Hybrid Spatial–Categorical strategy** to capture the nuance of urban pricing. By engineering features around property utility and neighborhood clusters, it achieves high predictive performance with a clean generalization profile.
 
-The project was developed in a Google Colab environment and followed a structured, iterative workflow.
+### Key Performance Indicators (Held-out Test Set)
 
-**2.1 Data Preparation**
-The primary dataset, sourced from the City of Calgary's Open Data portal, was loaded into Pandas. The analysis focuses on the four most recent years of data available (2021-2024). Initial cleaning involved correcting data types, handling formatting inconsistencies, and filtering the data to a working set of residential properties.
-
-**2.2 Feature Engineering**
-Geospatial coordinates were engineered from the `MULTIPOLYGON` column. The centroid of each property's boundary was calculated using the Shapely library to generate precise `latitude` and `longitude` features.
-
-**2.3 Modeling and Optimization**
-To ensure the model could generalize to new data, the dataset was partitioned into an 80% training set and a 20% held-out test set.
-* An **XGBoost Regressor** was selected as the primary algorithm.
-* The dataset was strategically filtered to focus the model on the core residential market.
-* **Hyperparameter tuning** was performed using `RandomizedSearchCV` to find the optimal settings for the model, which was the final step in maximizing its predictive accuracy.
-
-### **3.0 Results and Discussion**
-
-The final, tuned XGBoost model demonstrated excellent performance and a strong, generalizable fit.
-
-| Metric | Test Set (Unseen Data) | Train Set (Seen Data) |
+| Metric | Score | Context |
 | :--- | :--- | :--- |
-| **R-squared** | 0.836 | 0.845 |
-| **MAE** | $72,556.72 | $71,431.93 |
-| **RMSE** | $122,021.68 | $118,516.21 |
-
-The close alignment between the test and train set scores confirms that the model is **well-fitted and not "memorizing" the data**. Key insights from the analysis include:
-
-* **Key Insight 1: Hyperparameter Tuning is Crucial:** The final tuning step provided the most significant performance boost, increasing the R-squared score from 0.73 to 0.84.
-* **Key Insight 2: Geospatial Coordinates are Superior:** Feature importance analysis confirmed that precise `latitude` and `longitude` were the most powerful predictors of value.
-* **Key Insight 3: Outlier Handling is Key:** Strategically removing a small fraction of extreme outliers was critical to building a reliable and accurate model for the general market.
-
-**3.1 Visual Diagnostics**
-
-![Feature Importance Plot](./images/Tuned_Feature_Importance.png)
-*This plot ranks the features by their importance to the model. Geospatial coordinates are clearly the most influential factors.*
-
-![Actual vs Predicted Plot](./images/Actual_vs_Predicted_Values.png)
-
-*This plot shows the model's predictions against the actual property values. The tight clustering around the red diagonal line indicates a strong predictive performance.*
-
-![Correlation Matrix](./images/Correlation_Matrix.png)
-
-*This heatmap shows the correlation between the core numerical features, confirming the absence of severe multicollinearity.*
-
-### **4.0 Conclusion**
-
-This project successfully culminated in a high-performing predictive model for a large and complex dataset. The process demonstrates a complete, end-to-end data science workflow, from data sourcing and cleaning to advanced modeling and interpretation. The final model and the documented process serve as a strong testament to the practical application of machine learning techniques.
+| **R² Score** | **0.943** | Explains 94.3% of variance in assessed values. |
+| **MAE** | **$41,951** | Average absolute error in dollar terms (~8% of value). |
+| **RMSE** | **$80,392** | Penalizes larger errors more heavily. |
+| **Generalization** | **1.0%** | Minimal gap between Train vs. Test scores (Low overfitting). |
 
 ---
 
-### **Appendix A: Replication Steps**
+## 🧠 Engineering Strategy: "Context over Coordinates"
 
-1.  **Clone the Repository:** `git clone https://github.com/your-username/your-repository-name.git`
-2.  **Set up the Data:** Download the "Property Assessment Data" CSV from [this link](https://data.calgary.ca/Government/Total-Property-Assessed-Value/dmd8-bmxh) or access the 4-year dataset used in this analysis from this [Google Drive folder](https://drive.google.com/drive/folders/1pFD7AK32eBGZV5wry9PpK3Dd4mWuSmTg?usp=sharing).
-3.  **Open in Google Colab:** Upload the `.ipynb` notebook file to Google Colab and ensure the runtime is set to `T4 GPU`.
-4.  **Run the Notebook:** Execute the cells in the notebook from top to bottom.
+Early baselines using only raw Latitude/Longitude features plateaued around **0.84 R²**. The jump to **0.94 R²** came from treating **context** as a first-class signal:
 
-### **Appendix B: Tools and Libraries**
+1.  **Granular Zoning (`SUB_PROPERTY_USE`)**
+    Allows the model to distinguish between property types (e.g., "Low-rise Condo" vs. "Detached Home") instead of treating all residential lots as homogeneous.
+2.  **Neighborhood Codes (`COMM_CODE`) with Native Categoricals**
+    Uses `enable_categorical=True` in XGBoost to handle high-cardinality neighborhood identifiers directly, avoiding memory-heavy one-hot encoding.
+3.  **Spatial Centroids from Geometry**
+    Parses WKT `MULTIPOLYGON` data via **Shapely** to extract precise geometric centroids (longitude/latitude) for each parcel.
 
-* **Language:** Python
-* **Core Libraries:** Pandas, Scikit-learn, XGBoost, Shapely
-* **Environment:** Google Colab (T4 GPU)
-* **Version Control:** Git / GitHub
+Combined, these features let the model learn: *what the property is*, *where it is*, and *how it’s used*—not just raw coordinates.
+
+---
+
+## 🗂️ Data Pipeline
+
+* **Source:** City of Calgary Open Data
+* **Dataset:** "Total Property Assessed Value"
+* **Scope:** Filtered to `ASSESSMENT_CLASS_DESCRIPTION == "Residential"`
+
+**Preprocessing highlights:**
+* **Cleaning:** Parsed currency-like strings and filtered explicitly for valid residential zoning.
+* **Outlier Handling:** Restricted to values < $3M to stabilize training on the general market.
+* **Geometry:** Extracted centroids from `MULTIPOLYGON` shapes using `shapely.wkt.loads`.
+
+---
+
+## 📉 Visual Diagnostics
+
+### 1. Feature Importance
+*The model correctly identifies Property Type and Neighborhood as the primary drivers of value, matching human appraisal logic.*
+![Feature Importance](images/Tuned%20Model%20Feature%20Importance.png)
+
+### 2. Actual vs. Predicted Values (Density Heatmap)
+*A tight cloud along the 45° line indicates strong predictive accuracy. The heatmap reveals high density around the $400k–$700k market segment.*
+![Actual vs Predicted](images/Actual%20vs%20Predicted%20Values.png)
+
+### 3. Residual Analysis
+*Errors are centered near zero and approximately symmetric. The "fan" shape reflects natural heteroscedasticity—larger dollar errors for more expensive homes—rather than systematic bias.*
+![Residuals](images/Residuals.png)
+
+### 4. Correlation Matrix
+*Core numeric inputs exhibit low to moderate correlation, which supports model stability.*
+![Correlation Matrix](images/Correlation%20Matrix.png)
+
+---
+
+## ⚙️ Tech Stack
+
+* **Language:** Python 3.10+
+* **Core Libraries:** `pandas`, `numpy`
+* **Modeling:** `xgboost.XGBRegressor` (GPU-accelerated)
+* **Geospatial:** `shapely` (WKT parsing)
+* **Visualization:** `seaborn`, `matplotlib`
+
+---
+
+## 🚀 How to Run
+
+1.  **Clone the repo**
+    ```bash
+    git clone [https://github.com/mikebaloun/Predicting-Calgary-Real-Estate-Property-Value.git](https://github.com/mikebaloun/Predicting-Calgary-Real-Estate-Property-Value.git)
+    cd Predicting-Calgary-Real-Estate-Property-Value
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    pip install xgboost shapely pandas numpy seaborn matplotlib scikit-learn
+    ```
+
+3.  **Download the Data**
+    * Download the "Total Property Assessed Value" CSV from the [City of Calgary Open Data portal](https://data.calgary.ca/).
+    * Place it in a `data/` directory.
+
+4.  **Run the Analysis**
+    * Upload `Predicting_Calgary_Real_Estate_Property_Value.ipynb` to Google Colab.
+    * Select a **T4 GPU** runtime for faster execution.
+    * Run all cells to reproduce the pipeline.
+
+---
+*Author: Michael Baloun | Date: November 17, 2025*
