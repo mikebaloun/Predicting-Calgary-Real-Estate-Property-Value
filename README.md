@@ -1,4 +1,4 @@
-# Calgary Real Estate Valuation Engine
+# Calgary Real Estate Valuation Engine 🏘️
 
 **A residential Automated Valuation Model (AVM) achieving 94.3% R² on unseen data.**
 
@@ -41,6 +41,7 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 ## 🗂️ Data Pipeline
 
 * **Source:** City of Calgary Open Data
+* **Volume:** **~2.2 Million records** (covering assessment years 2020–2024).
 * **Dataset:** "Total Property Assessed Value"
 * **Scope:** **General Residential Market** (Properties < $3M).
     * *Note: Ultra-luxury outliers (>$3M) were explicitly removed to improve model stability for the general housing stock.*
