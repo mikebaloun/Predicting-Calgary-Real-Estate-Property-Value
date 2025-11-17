@@ -8,7 +8,7 @@
 
 ---
 
-## 📊 Executive Summary
+## Executive Summary
 
 This project implements an end-to-end machine learning pipeline to predict **residential property values in Calgary, Alberta** using open municipal data.
 
@@ -25,7 +25,7 @@ Moving beyond simple coordinates, the model uses a **Hybrid Spatial–Categorica
 
 ---
 
-## 🧠 Engineering Strategy: "Context over Coordinates"
+## Engineering Strategy: "Context over Coordinates"
 
 Early baselines using only raw Latitude/Longitude features plateaued around **0.84 R²**. The jump to **0.94 R²** came from treating **context** as a first-class signal:
 
@@ -38,7 +38,7 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 
 ---
 
-## 🗂️ Data Pipeline
+## Data Pipeline
 
 * **Source:** City of Calgary Open Data
 * **Volume:** **~2.2 Million records** (covering assessment years 2020–2024).
@@ -53,7 +53,7 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 
 ---
 
-## 📉 Visual Diagnostics
+## Visual Diagnostics
 
 ### 1. Feature Importance
 *Property Type and Neighborhood are the primary value drivers, matching appraisal logic.*
@@ -73,7 +73,7 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 * **Language:** Python 3.10+
 * **Modeling:** `xgboost` (GPU-accelerated), `scikit-learn`
@@ -82,7 +82,7 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
 1.  **Clone the repo**
     ```bash
