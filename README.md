@@ -1,4 +1,4 @@
-# Calgary Real Estate Valuation Engine 🏘️
+# Calgary Real Estate Valuation Engine
 
 **A residential Automated Valuation Model (AVM) achieving 94.3% R² on unseen data.**
 
@@ -42,7 +42,8 @@ Early baselines using only raw Latitude/Longitude features plateaued around **0.
 
 * **Source:** City of Calgary Open Data
 * **Dataset:** "Total Property Assessed Value"
-* **Scope:** Residential properties < $3M (Filtered to remove extreme outliers).
+* **Scope:** **General Residential Market** (Properties < $3M).
+    * *Note: Ultra-luxury outliers (>$3M) were explicitly removed to improve model stability for the general housing stock.*
 
 **Processing Highlights:**
 * **Parsing:** Converted raw WKT polygon strings into coordinate floats.
